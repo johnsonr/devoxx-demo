@@ -19,6 +19,8 @@
     <properties>
         <java.version>21</java.version>
         <embabel-agent.version>1.5.3</embabel-agent.version>
+        <!-- The sandbox module lives in embabel-agent-experimental; 1.5.4-SNAPSHOT has the Java-friendly ScratchTool constructors -->
+        <embabel-agent-sandbox.version>1.5.4-SNAPSHOT</embabel-agent-sandbox.version>
         <!-- Embabel 1.5.3 is built with Kotlin 2.2.x; override the Spring Boot parent default -->
         <kotlin.version>2.2.21</kotlin.version>
     </properties>
@@ -54,6 +56,13 @@
             <version>${embabel-agent.version}</version>
         </dependency>
 
+        <!-- Code mode: the LLM writes a script and runs it in a persistent Docker sandbox -->
+        <dependency>
+            <groupId>com.embabel.agent</groupId>
+            <artifactId>embabel-agent-sandbox</artifactId>
+            <version>${embabel-agent-sandbox.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>com.embabel.agent</groupId>
             <artifactId>embabel-agent-test</artifactId>
@@ -66,6 +75,21 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <repositories>
+        <!-- embabel-agent-sandbox is published here, not to Maven Central -->
+        <repository>
+            <id>embabel-releases</id>
+            <url>https://repo.embabel.com/artifactory/libs-release</url>
+        </repository>
+        <repository>
+            <id>embabel-snapshots</id>
+            <url>https://repo.embabel.com/artifactory/libs-snapshot</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 
     <build>
         <plugins>

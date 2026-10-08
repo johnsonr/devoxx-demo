@@ -7,10 +7,11 @@ Three Embabel Agent features over one corpus: the five Sherlock Holmes short-sto
 | Agentic RAG with `ToolishRag` over an in-memory Lucene store | `RagConfiguration`, `HolmesChat` | `chat` then ask "What was the real purpose of the Red-Headed League?" |
 | GOAP planning: evidence -> deduction -> case file | `CaseAgent` | `investigate "Why did Holmes refuse the emerald ring?"` |
 | Agent Skills with a Python script in a Docker sandbox | `SkillsConfiguration`, `skills/holmes-stats` | `chat` then ask "How many times is Lestrade mentioned in each story?" |
+| Code mode: the LLM writes a script and runs it in the Embabel sandbox | `SandboxConfiguration`, `HolmesScriptRunner` | `chat` then ask "Which story has the most dialogue?" |
 
 ## Run
 
-Requires Java 21+, an `OPENAI_API_KEY` (for the LLM and embeddings) and, for the skills demo, Docker
+Requires Java 21+, an `OPENAI_API_KEY` (for the LLM and embeddings) and, for the skills and code mode demos, Docker
 with the sandbox image:
 
 ```bash
