@@ -1,0 +1,9 @@
+embabel:
+  agent:
+    shell:
+      # Keep the chat transcript clean: logs go to logs/chat-session.log during chat
+      redirect-log-to-file: true
+  models:
+    # Uncomment to override the framework default LLM
+    # default-llm: gpt-5.4-mini
+    default-embedding-model: text-embedding-3-small
