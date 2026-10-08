@@ -11,6 +11,7 @@ import tools.jackson.databind.json.JsonMapper;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -42,12 +43,22 @@ public class HolmesScriptRunner implements LlmReference {
 
     private final ScratchTool scratchTool;
     private final Path corpusDir;
+    private final ScriptRunListener listener;
     private final JsonMapper json = JsonMapper.builder().build();
     private boolean corpusStaged;
 
     public HolmesScriptRunner(ScratchTool scratchTool, Path corpusDir) {
+        this(scratchTool, corpusDir, ScriptRunListener.NONE);
+    }
+
+    /**
+     * @param listener notified after every script run, for example to print the
+     *                 script and its output
+     */
+    public HolmesScriptRunner(ScratchTool scratchTool, Path corpusDir, ScriptRunListener listener) {
         this.scratchTool = scratchTool;
         this.corpusDir = corpusDir;
+        this.listener = listener;
     }
 
     @Override
@@ -91,7 +102,12 @@ public class HolmesScriptRunner implements LlmReference {
             if (written instanceof Tool.Result.Error error) {
                 return "Could not write script: " + error.getMessage();
             }
-            return render(run(lang.run(), null));
+            var started = System.nanoTime();
+            var output = render(run(lang.run(), null));
+            var duration = Duration.ofNanos(System.nanoTime() - started);
+            logger.info("Ran {} script in {} ms:\n{}\n--- output ---\n{}", language, duration.toMillis(), code, output);
+            listener.onScriptRun(new ScriptRunListener.ScriptRun(language, code, output, duration));
+            return output;
         } catch (Exception e) {
             logger.warn("Script run failed", e);
             return "Sandbox error: " + e.getMessage();

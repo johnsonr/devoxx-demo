@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIf;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -14,7 +16,8 @@ class HolmesScriptRunnerTest {
 
     private static final DockerSandboxSessionManager sessions = new DockerSandboxSessionManager();
     private static final ScratchTool scratch = new ScratchTool(sessions);
-    private final HolmesScriptRunner runner = new HolmesScriptRunner(scratch, Path.of("data", "sherlock"));
+    private final List<ScriptRunListener.ScriptRun> runs = new ArrayList<>();
+    private final HolmesScriptRunner runner = new HolmesScriptRunner(scratch, Path.of("data", "sherlock"), runs::add);
 
     @AfterAll
     static void closeSandbox() {
@@ -58,6 +61,12 @@ class HolmesScriptRunnerTest {
 
         var listing = runner.runScript("bash", "ls corpus | wc -l");
         assertTrue(listing.trim().endsWith("5"), listing);
+
+        assertEquals(2, runs.size(), "Listener sees every run: " + runs);
+        assertEquals("bash", runs.get(1).language());
+        assertEquals("ls corpus | wc -l", runs.get(1).code());
+        assertEquals(listing, runs.get(1).output());
+        assertFalse(runs.get(1).duration().isNegative());
     }
 
     static boolean sandboxImageAvailable() {

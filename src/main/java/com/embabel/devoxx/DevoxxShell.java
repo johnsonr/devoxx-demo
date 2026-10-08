@@ -13,7 +13,10 @@ record DevoxxShell(AgentPlatform agentPlatform, LuceneSearchOperations luceneSea
 
     @ShellMethod("Investigate a question about the stories: GOAP plans evidence -> deduction -> case file")
     String investigate(
-            @ShellOption(defaultValue = "What was the real purpose of the Red-Headed League?") String question) {
+            @ShellOption(
+                    value = "--question",
+                    help = "The question to investigate",
+                    defaultValue = "What was the real purpose of the Red-Headed League?") String question) {
         var caseFile = AgentInvocation
                 .create(agentPlatform, CaseAgent.CaseFile.class)
                 .invoke(new UserInput(question));

@@ -28,8 +28,13 @@ class SandboxConfiguration {
         return new ScratchTool(sandboxSessionManager);
     }
 
+    /**
+     * Every script the LLM runs is pretty printed to the console, so the
+     * audience sees the generated code and its output, not just the tool call.
+     */
     @Bean
     HolmesScriptRunner holmesScriptRunner(ScratchTool scratchTool) {
-        return new HolmesScriptRunner(scratchTool, RagConfiguration.CORPUS_DIR);
+        return new HolmesScriptRunner(scratchTool, RagConfiguration.CORPUS_DIR,
+                new PrettyPrintingScriptListener(System.out));
     }
 }
