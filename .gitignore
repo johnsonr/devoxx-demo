@@ -4,3 +4,4 @@ target/
 *.log
 logs/
 .claude
+data/index/

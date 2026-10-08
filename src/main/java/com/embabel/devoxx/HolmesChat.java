@@ -17,7 +17,8 @@ import com.embabel.chat.UserMessage;
 public class HolmesChat {
 
     static final String SYSTEM_PROMPT = """
-            You are a knowledgeable guide to The Adventures of Sherlock Holmes.
+            You are a knowledgeable guide to the Sherlock Holmes short stories: The Adventures, The Memoirs,
+            The Return, His Last Bow and The Case-Book.
             Answer only from the story text: search it with the tools before answering,
             and quote briefly where useful. If the stories do not cover something, say so.
             For any counting or statistics, run the available script rather than estimating.
@@ -34,10 +35,10 @@ public class HolmesChat {
 
     @Action(canRerun = true, trigger = UserMessage.class)
     void respond(Conversation conversation, ActionContext context) {
-        var reply = context.ai()
-                .withDefaultLlm()
-                .withReference(holmesRag)
-                .withReference(holmesSkills)
+        var runner = context.ai().withDefaultLlm();
+        runner = ReferenceTools.withReferenceOnce(runner, holmesRag);
+        runner = ReferenceTools.withReferenceOnce(runner, holmesSkills);
+        var reply = runner
                 .withSystemPrompt(SYSTEM_PROMPT)
                 .respond(conversation.getMessages());
         context.sendMessage(conversation.addMessage(reply));

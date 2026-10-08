@@ -1,6 +1,6 @@
 # Embabel Devoxx demo
 
-Three Embabel Agent features over one corpus: *The Adventures of Sherlock Holmes* (Project Gutenberg).
+Three Embabel Agent features over one corpus: the five Sherlock Holmes short-story collections, 56 stories, from Project Gutenberg.
 
 | Feature | Where | Try it in the shell |
 |---|---|---|
@@ -18,8 +18,10 @@ docker build -t embabel/agent-sandbox:latest <embabel-agent repo>/embabel-agent-
 mvn spring-boot:run
 ```
 
-The corpus is ingested at startup (about a minute for embeddings). Useful shell commands: `chat`,
-`investigate`, `corpus`, `help`.
+The corpus is ingested on first start (a few minutes for embeddings) into a Lucene index at
+`data/index`. Later starts reuse the index and skip ingestion. Delete the directory to re-ingest.
+
+Useful shell commands: `chat`, `investigate`, `corpus`, `help`.
 
 ## Tests
 

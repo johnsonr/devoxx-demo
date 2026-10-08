@@ -8,6 +8,7 @@ import com.embabel.common.ai.model.DefaultModelSelectionCriteria;
 import com.embabel.common.ai.model.ModelProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -21,12 +22,15 @@ class RagConfiguration {
     static final Path CORPUS_DIR = Path.of("data", "sherlock");
 
     /**
-     * In-memory Lucene store with both BM25 text search and vector search.
-     * No index path is set, so nothing touches disk. The corpus is ingested
-     * here so the store is populated before any shell command can run.
+     * Lucene store with both BM25 text search and vector search, persisted
+     * on disk so embeddings are computed once. On later starts the existing
+     * index and its chunks are loaded and ingestion is skipped for documents
+     * already present. Delete the index directory to force re-ingestion.
      */
     @Bean
-    LuceneSearchOperations luceneSearchOperations(ModelProvider modelProvider) {
+    LuceneSearchOperations luceneSearchOperations(
+            ModelProvider modelProvider,
+            @Value("${holmes.index-dir:data/index}") Path indexDir) {
         var embeddingService = modelProvider.getEmbeddingService(DefaultModelSelectionCriteria.INSTANCE);
         var store = LuceneSearchOperations
                 .withName("holmes")
@@ -34,9 +38,11 @@ class RagConfiguration {
                 .withChunkerConfig(new ContentChunker.Config(1200, 150, 100))
                 // Prefix chunks with their section titles so the LLM can tell stories apart
                 .withChunkTransformer(AddTitlesChunkTransformer.INSTANCE)
-                .build();
+                .withIndexPath(indexDir)
+                .buildAndLoadChunks();
+        logger.info("Lucene index at {}: {}", indexDir.toAbsolutePath(), store.info());
         var count = new HolmesCorpus(store).ingest(CORPUS_DIR);
-        logger.info("Ingested {} document(s): {}", count, store.info());
+        logger.info("Ingested {} new document(s): {}", count, store.info());
         return store;
     }
 
@@ -48,7 +54,7 @@ class RagConfiguration {
     ToolishRag holmesRag(LuceneSearchOperations luceneSearchOperations) {
         return new ToolishRag(
                 "holmes",
-                "The full text of the twelve stories in The Adventures of Sherlock Holmes",
+                "The full text of the 56 Sherlock Holmes short stories: The Adventures, The Memoirs, The Return, His Last Bow and The Case-Book",
                 luceneSearchOperations);
     }
 }

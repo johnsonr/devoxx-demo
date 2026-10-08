@@ -7,3 +7,7 @@ embabel:
     # Uncomment to override the framework default LLM
     # default-llm: gpt-5.4-mini
     default-embedding-model: text-embedding-3-small
+
+holmes:
+  # Lucene index on disk; embeddings are computed once. Delete it to re-ingest.
+  index-dir: data/index
