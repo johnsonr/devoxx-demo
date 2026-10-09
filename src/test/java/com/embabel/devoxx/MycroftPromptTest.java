@@ -20,8 +20,10 @@ class MycroftPromptTest {
                 Map.of("canon", HolmesChat.CANON, "maxWords", HolmesChat.MAX_WORDS));
 
         assertTrue(prompt.contains("You are Mycroft Holmes"), prompt);
-        assertTrue(prompt.contains("I have observed my brother's career with great interest, and always pride myself\n"
-                + "in scrupulous attention to detail."), prompt);
+        var oneLine = prompt.replaceAll("\\s+", " ");
+        assertTrue(oneLine.contains("I have observed my brother's career with great interest, "
+                + "and always pride myself in scrupulous attention to detail."), prompt);
+        assertTrue(oneLine.contains("The tools fetch; you speak."), prompt);
         for (var book : HolmesChat.CANON) {
             assertTrue(prompt.contains("- " + book), prompt);
         }
