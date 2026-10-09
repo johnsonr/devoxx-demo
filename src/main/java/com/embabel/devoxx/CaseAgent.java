@@ -9,6 +9,7 @@ import com.embabel.agent.domain.library.HasContent;
 import com.embabel.agent.rag.tools.ToolishRag;
 import org.springframework.lang.NonNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,6 +35,9 @@ public class CaseAgent {
             List<String> evidence
     ) implements HasContent {
 
+        /** Column at which the shell output wraps; LLM prose arrives as one long line per paragraph. */
+        static final int WIDTH = 100;
+
         @Override
         @NonNull
         public String getContent() {
@@ -50,10 +54,33 @@ public class CaseAgent {
                     %s
                     """.formatted(
                     question,
-                    conclusion,
-                    reasoning,
-                    String.join("\n\n", evidence.stream().map(e -> "> " + e).toList())
+                    wrap(conclusion, ""),
+                    wrap(reasoning, ""),
+                    String.join("\n\n", evidence.stream().map(e -> wrap(e, "> ")).toList())
             ).trim();
+        }
+
+        /**
+         * Wraps each paragraph of the text at {@link #WIDTH} columns, prefixing every
+         * line with the given prefix. Existing line breaks are kept.
+         */
+        static String wrap(String text, String prefix) {
+            var lines = new ArrayList<String>();
+            for (var paragraph : text.strip().split("\\R")) {
+                var line = new StringBuilder(prefix);
+                for (var word : paragraph.strip().split("\\s+")) {
+                    if (line.length() > prefix.length() && line.length() + 1 + word.length() > WIDTH) {
+                        lines.add(line.toString());
+                        line = new StringBuilder(prefix);
+                    }
+                    if (line.length() > prefix.length()) {
+                        line.append(' ');
+                    }
+                    line.append(word);
+                }
+                lines.add(line.toString());
+            }
+            return String.join("\n", lines);
         }
     }
 

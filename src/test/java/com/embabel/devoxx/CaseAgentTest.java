@@ -54,6 +54,22 @@ class CaseAgentTest {
     }
 
     @Test
+    void caseFileWrapsLongProseAndKeepsQuotePrefixes() {
+        var longSentence = "word ".repeat(60).strip();
+        var caseFile = agent.writeCaseFile(question,
+                new CaseAgent.Evidence(List.of(longSentence)),
+                new CaseAgent.Deduction(longSentence, longSentence));
+
+        var content = caseFile.getContent();
+        for (var line : content.split("\n")) {
+            assertTrue(line.length() <= CaseAgent.CaseFile.WIDTH, "Line too long: " + line);
+        }
+        var quoted = content.lines().filter(l -> l.startsWith("> ")).count();
+        assertTrue(quoted >= 3, "Every continuation line of a passage keeps the quote prefix: " + content);
+        assertEquals(60, content.lines().filter(l -> l.startsWith("> ")).mapToInt(l -> l.split(" ").length - 1).sum());
+    }
+
+    @Test
     void caseFileNeedsNoLlm() {
         var caseFile = agent.writeCaseFile(question, evidence, deduction);
 
