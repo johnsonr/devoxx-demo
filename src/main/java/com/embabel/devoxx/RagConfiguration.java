@@ -54,7 +54,7 @@ class RagConfiguration {
     ToolishRag holmesRag(LuceneSearchOperations luceneSearchOperations) {
         return new ToolishRag(
                 "holmes",
-                "The full text of the 56 Sherlock Holmes short stories: The Adventures, The Memoirs, The Return, His Last Bow and The Case-Book",
+                "The full text of the Sherlock Holmes canon: the four novels and all 56 short stories",
                 luceneSearchOperations);
     }
 }

@@ -76,7 +76,7 @@ public class HolmesScriptRunner implements LlmReference {
         return """
                 Use run_script for anything the search tools cannot answer directly:
                 statistics, comparisons across stories, word or dialogue counts, rankings.
-                The stories are Markdown files in corpus/ (one per collection), each story
+                The stories are Markdown files in corpus/ (one per book), each story or chapter
                 starting with a "## " heading. Python 3 with the standard library is available;
                 there is no pandas. Print results, then report them exactly.""";
     }

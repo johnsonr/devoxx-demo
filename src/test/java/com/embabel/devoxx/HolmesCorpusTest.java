@@ -26,7 +26,7 @@ class HolmesCorpusTest {
     void ingest() {
         store = LuceneSearchOperations.withName("holmes-test").build();
         var ingested = new HolmesCorpus(store).ingest(Path.of("data", "sherlock"));
-        assertEquals(5, ingested);
+        assertEquals(9, ingested);
     }
 
     @AfterEach
@@ -51,7 +51,7 @@ class HolmesCorpusTest {
     void reopeningOnDiskIndexSkipsIngestion(@TempDir Path indexDir) {
         var corpus = Path.of("data", "sherlock");
         var first = LuceneSearchOperations.withName("holmes-disk").withIndexPath(indexDir).build();
-        assertEquals(5, new HolmesCorpus(first).ingest(corpus));
+        assertEquals(9, new HolmesCorpus(first).ingest(corpus));
         var chunks = first.info().getChunkCount();
         first.close();
 

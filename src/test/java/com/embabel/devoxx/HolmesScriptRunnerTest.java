@@ -56,11 +56,11 @@ class HolmesScriptRunnerTest {
                 print("files", len(glob.glob("corpus/*.md")))
                 print("headings", stories)
                 """);
-        assertTrue(output.contains("files 5"), output);
-        assertTrue(output.contains("headings 58"), output);
+        assertTrue(output.contains("files 9"), output);
+        assertTrue(output.contains("headings 113"), output);
 
         var listing = runner.runScript("bash", "ls corpus | wc -l");
-        assertTrue(listing.trim().endsWith("5"), listing);
+        assertTrue(listing.trim().endsWith("9"), listing);
 
         assertEquals(2, runs.size(), "Listener sees every run: " + runs);
         assertEquals("bash", runs.get(1).language());

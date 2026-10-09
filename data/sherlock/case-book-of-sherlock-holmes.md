@@ -1,31 +1,3 @@
-The Project Gutenberg eBook of The case-book of Sherlock Holmes
-    
-This eBook is for the use of anyone anywhere in the United States and
-most other parts of the world at no cost and with almost no restrictions
-whatsoever. You may copy it, give it away or re-use it under the terms
-of the Project Gutenberg License included with this eBook or online
-at www.gutenberg.org. If you are not located in the United States,
-you will have to check the laws of the country where you are located
-before using this eBook.
-
-Title: The case-book of Sherlock Holmes
-
-Author: Arthur Conan Doyle
-
-
-        
-Release date: January 3, 2023 [eBook #69700]
-                Most recently updated: October 19, 2024
-
-Language: English
-
-Original publication: United Kingdom: John Murray, 1927
-
-Other information and formats: www.gutenberg.org/ebooks/69700
-
-Credits: Al Haines
-
-
 # The Case-Book of Sherlock Holmes
 
   THE CASE-BOOK OF

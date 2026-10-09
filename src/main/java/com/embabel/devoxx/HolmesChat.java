@@ -18,8 +18,8 @@ import com.embabel.chat.UserMessage;
 public class HolmesChat {
 
     static final String SYSTEM_PROMPT = """
-            You are a knowledgeable guide to the Sherlock Holmes short stories: The Adventures, The Memoirs,
-            The Return, His Last Bow and The Case-Book.
+            You are a knowledgeable guide to the complete Sherlock Holmes canon: the four novels and
+            the 56 short stories in The Adventures, The Memoirs, The Return, His Last Bow and The Case-Book.
             Answer only from the story text: search it with the tools before answering,
             and quote briefly where useful. If the stories do not cover something, say so.
             For counting mentions of names, use the holmes-stats skill. For any other
@@ -50,7 +50,7 @@ public class HolmesChat {
                 .withSystemPrompt(SYSTEM_PROMPT)
                 .respond(conversation.getMessages());
         if (!sources.isEmpty()) {
-            reply = new AssistantMessage(reply.getContent() + "\n\n" + sources.summary());
+            reply = new AssistantMessage(reply.getContent() + "\n\n" + sources.summary(reply.getContent()));
         }
         context.sendMessage(conversation.addMessage(reply));
     }

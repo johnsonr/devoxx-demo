@@ -1,29 +1,3 @@
-The Project Gutenberg eBook of The Return of Sherlock Holmes
-    
-This eBook is for the use of anyone anywhere in the United States and
-most other parts of the world at no cost and with almost no restrictions
-whatsoever. You may copy it, give it away or re-use it under the terms
-of the Project Gutenberg License included with this eBook or online
-at www.gutenberg.org. If you are not located in the United States,
-you will have to check the laws of the country where you are located
-before using this eBook.
-
-Title: The Return of Sherlock Holmes
-
-Author: Arthur Conan Doyle
-
-
-        
-Release date: March 8, 2006 [eBook #108]
-                Most recently updated: April 25, 2026
-
-Language: English
-
-Other information and formats: www.gutenberg.org/ebooks/108
-
-Credits: An Anonymous Volunteer
-
-
 # The Return of Sherlock Holmes
 
 

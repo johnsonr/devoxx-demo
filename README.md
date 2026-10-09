@@ -1,6 +1,6 @@
 # Embabel Devoxx demo
 
-Three Embabel Agent features over one corpus: the five Sherlock Holmes short-story collections, 56 stories, from Project Gutenberg.
+Three Embabel Agent features over one corpus: the complete Sherlock Holmes canon from Project Gutenberg, four novels and 56 short stories.
 
 | Feature | Where | Try it in the shell |
 |---|---|---|
