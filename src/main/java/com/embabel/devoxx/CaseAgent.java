@@ -65,7 +65,9 @@ public class CaseAgent {
 
     @Action
     Evidence gatherEvidence(UserInput question, Ai ai) {
-        return ReferenceTools.withReferenceOnce(ai.withDefaultLlm(), holmesRag)
+        return ai
+                .withDefaultLlm()
+                .withReference(holmesRag)
                 .creating(Evidence.class)
                 .fromPrompt("""
                         You are Dr Watson assisting Sherlock Holmes.

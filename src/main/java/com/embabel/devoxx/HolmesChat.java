@@ -42,11 +42,11 @@ public class HolmesChat {
     void respond(Conversation conversation, ActionContext context) {
         // A fresh collector per turn: every search the LLM runs reports its results here
         var sources = new RetrievedSources();
-        var runner = context.ai().withDefaultLlm();
-        runner = ReferenceTools.withReferenceOnce(runner, holmesRag.withListener(sources));
-        runner = ReferenceTools.withReferenceOnce(runner, holmesSkills);
-        runner = ReferenceTools.withReferenceOnce(runner, scriptRunner);
-        var reply = runner
+        var reply = context.ai()
+                .withDefaultLlm()
+                .withReference(holmesRag.withListener(sources))
+                .withReference(holmesSkills)
+                .withReference(scriptRunner)
                 .withSystemPrompt(SYSTEM_PROMPT)
                 .respond(conversation.getMessages());
         if (!sources.isEmpty()) {
